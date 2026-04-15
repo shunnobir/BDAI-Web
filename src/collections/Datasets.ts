@@ -49,7 +49,7 @@ export const Datasets: CollectionConfig = {
     },
     {
       name: "formats",
-      type: "checkboxGroup",
+      type: "select",
       options: [
         { label: "RDF/Turtle (.ttl)", value: "ttl" },
         { label: "RDF/XML (.rdf)",    value: "rdf" },
