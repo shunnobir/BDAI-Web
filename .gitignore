@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+
+# Next.js
+.next/
+out/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Payload
+src/payload-types.ts
+
+# Uploads (dev — use S3/MinIO in prod)
+public/uploads/*
+!public/uploads/.gitkeep
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/settings.json
+*.swp
+
+# Logs
+*.log
+npm-debug.log*
+
+# Docker volumes (mounted externally)
+docker/fuseki/databases/

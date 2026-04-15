@@ -1,0 +1,196 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── CSS custom properties (used in raw CSS where @apply cannot reach) ─── */
+:root {
+  --navy: 15 33 68;
+  --sky: 46 111 181;
+  --gold: 201 168 76;
+  --cream: 248 245 239;
+  --muted: 107 114 128;
+  --border: 221 216 206;
+}
+
+/* ── Base ────────────────────────────────────────────────────────────────── */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+  }
+
+  body {
+    @apply bg-brand-cream text-stone-900 font-sans antialiased;
+    background-image:
+      radial-gradient(
+        circle at 100% 0%,
+        rgb(46 111 181 / 0.04) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 0% 100%,
+        rgb(15 33 68 / 0.03) 0%,
+        transparent 50%
+      );
+    background-attachment: fixed;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-serif;
+  }
+  h4,
+  h5,
+  h6 {
+    @apply font-sans font-semibold;
+  }
+  p {
+    @apply font-body leading-relaxed;
+  }
+
+  a {
+    @apply text-brand-sky hover:text-brand-navy transition-colors;
+  }
+
+  ::selection {
+    background: rgb(201 168 76 / 0.25);
+    color: rgb(15 33 68);
+  }
+}
+
+/* ── Components ─────────────────────────────────────────────────────────── */
+@layer components {
+  /* ── Navbar ── */
+  .nav-link {
+    @apply relative text-sm font-sans font-medium text-brand-navy/80
+           hover:text-brand-navy transition-colors duration-200 py-1;
+  }
+  .nav-link::after {
+    content: "";
+    @apply absolute bottom-0 left-0 w-0 h-px bg-brand-gold
+           transition-all duration-300;
+  }
+  .nav-link:hover::after,
+  .nav-link.active::after {
+    @apply w-full;
+  }
+
+  /* ── Cards ── */
+  .card {
+    @apply bg-brand-paper border border-brand-border rounded-lg shadow-card
+           hover:shadow-panel transition-shadow duration-300;
+  }
+  .card-hover {
+    @apply card hover:-translate-y-0.5 transition-transform duration-300;
+  }
+
+  /* ── Badges ──
+     Opacity values must be multiples of 5 (Tailwind's built-in scale)
+     or use the [x%] arbitrary syntax. We use /10 and /15 here.       */
+  .badge {
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-xs
+           font-sans font-medium
+           bg-brand-navy/10 text-brand-navy border border-brand-navy/15;
+  }
+  .badge-gold {
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-xs
+           font-sans font-medium
+           bg-brand-gold/15 text-amber-800 border border-brand-gold/30;
+  }
+  .badge-sky {
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-xs
+           font-sans font-medium
+           bg-brand-sky/10 text-brand-sky border border-brand-sky/25;
+  }
+  .badge-green {
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-xs
+           font-sans font-medium
+           bg-emerald-50 text-emerald-700 border border-emerald-200;
+  }
+
+  /* ── Section headings ── */
+  .section-eyebrow {
+    @apply text-xs font-sans font-semibold tracking-widest uppercase
+           text-brand-gold mb-3;
+  }
+  .section-title {
+    @apply font-serif text-3xl md:text-4xl text-brand-navy leading-tight;
+  }
+  .section-subtitle {
+    @apply font-body text-lg text-brand-muted leading-relaxed;
+  }
+
+  /* ── Buttons ── */
+  .btn-primary {
+    @apply inline-flex items-center gap-2 px-5 py-2.5
+           bg-brand-navy text-white font-sans font-medium text-sm
+           rounded hover:bg-brand-blue transition-colors duration-200
+           shadow-sm hover:shadow;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center gap-2 px-5 py-2.5
+           bg-transparent text-brand-navy font-sans font-medium text-sm
+           rounded border border-brand-border
+           hover:border-brand-navy/40 hover:bg-brand-navy/5
+           transition-colors duration-200;
+  }
+  .btn-gold {
+    @apply inline-flex items-center gap-2 px-5 py-2.5
+           bg-brand-gold text-white font-sans font-medium text-sm
+           rounded hover:bg-amber-600 transition-colors duration-200;
+  }
+
+  /* ── Code / DOI box ── */
+  .doi-box {
+    @apply font-mono text-xs bg-brand-navy/5 border border-brand-border
+           rounded px-3 py-2 break-all text-brand-navy/70;
+  }
+
+  /* ── Divider ── */
+  .divider {
+    @apply border-t border-brand-border;
+  }
+
+  /* ── Stat card ── */
+  .stat-card {
+    @apply bg-brand-paper border border-brand-border rounded-lg
+           p-6 text-center shadow-card;
+  }
+
+  /* ── Prose (requires @tailwindcss/typography) ── */
+  .prose-academic {
+    /* @apply prose prose-stone max-w-prose; */
+    font-family: Arial, Helvetica, sans-serif;
+  }
+}
+
+/* ── Utilities ──────────────────────────────────────────────────────────── */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .content-grid {
+    @apply max-w-content mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Animation delay helpers */
+  .delay-100 {
+    animation-delay: 100ms;
+  }
+  .delay-200 {
+    animation-delay: 200ms;
+  }
+  .delay-300 {
+    animation-delay: 300ms;
+  }
+  .delay-400 {
+    animation-delay: 400ms;
+  }
+  .delay-500 {
+    animation-delay: 500ms;
+  }
+}

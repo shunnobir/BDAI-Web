@@ -1,0 +1,56 @@
+version: "3.9"
+
+services:
+  # ─── PostgreSQL (Payload CMS database) ─────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: research_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-research_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-research_pass}
+      POSTGRES_DB: ${POSTGRES_DB:-research_db}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-research_user}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ─── Apache Jena Fuseki (SPARQL triplestore) ────────────────────────
+  fuseki:
+    image: stain/jena-fuseki:latest
+    container_name: research_fuseki
+    restart: unless-stopped
+    environment:
+      ADMIN_PASSWORD: ${FUSEKI_ADMIN_PASSWORD:-fuseki_admin_pass}
+      JVM_ARGS: -Xmx2g
+    ports:
+      - "3030:3030"       # Fuseki UI (NOT exposed publicly — proxy via Next.js)
+    volumes:
+      - fuseki_data:/fuseki/databases
+      - ./docker/fuseki/config:/fuseki/configuration
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3030/$/ping"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+
+volumes:
+  postgres_data:
+  fuseki_data:
+
+# ─── Notes ───────────────────────────────────────────────────────────
+# Start services:       docker compose up -d
+# Stop services:        docker compose down
+# View logs:            docker compose logs -f
+# Fuseki UI (local):    http://localhost:3030
+# PostgreSQL port:      5432
+#
+# In production on your own server:
+#   - Do NOT expose port 3030 to the public internet
+#   - Use your Next.js /api/sparql proxy route instead
+#   - Add a reverse proxy (nginx/caddy) in front of Next.js
